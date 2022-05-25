@@ -10,7 +10,7 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 
 
-class UrlInterceptorService : AccessibilityService() {
+class GetUrl : AccessibilityService() {
     private val previousUrlDetections: HashMap<String, Long> = HashMap()
     override fun onServiceConnected() {
         val info = serviceInfo
