@@ -21,6 +21,7 @@ import java.util.*
 import android.os.Build
 import android.content.Intent
 import android.provider.Settings
+import com.arun.siteblocktimer.BaseAct
 
 
 class SecondActivity : AppCompatActivity() {
@@ -39,6 +40,8 @@ class SecondActivity : AppCompatActivity() {
     lateinit var tvWhite: TextView
     lateinit var tvWhiteList: TextView
     lateinit var tvBlackList: TextView
+    val baseAct: BaseAct = BaseAct.instance
+
 
 
 
@@ -88,12 +91,16 @@ class SecondActivity : AppCompatActivity() {
     }
 
     fun whiteList(){
+        baseAct.data = false
+
         tvBlack.visibility = View.GONE
         tvWhite.visibility = View.VISIBLE
         tvWhiteList.setTextColor(Color.parseColor("#FF000000"))
         tvBlackList.setTextColor(Color.parseColor("#73777B"))
     }
     fun blackList(){
+        baseAct.data = true
+
         tvBlack.visibility = View.VISIBLE
         tvWhite.visibility = View.GONE
         tvBlackList.setTextColor(Color.parseColor("#FF000000"))
@@ -135,8 +142,9 @@ class SecondActivity : AppCompatActivity() {
             val i = Intent(applicationContext, SecondActivity::class.java)
             i.putExtra("fromTime",fromTime.text.toString())
             i.putExtra("toTime",toTime.text.toString())
-            startActivity(i)
             finish()
+            dialog.dismiss()
+            startActivity(i)
         }
         val btnClose = view.findViewById<ImageView>(R.id.closeIV)
         btnClose.setOnClickListener {

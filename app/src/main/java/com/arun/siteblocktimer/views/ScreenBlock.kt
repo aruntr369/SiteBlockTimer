@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.arun.siteblocktimer.BaseAct
 import com.arun.siteblocktimer.R
 import com.arun.siteblocktimer.service.ForegroundService
 
@@ -24,9 +25,19 @@ class ScreenBlock : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_screen_block)
 
-        startService()
+//        var secondActivity = SecondActivity()
+//        if (secondActivity.switch.isChecked){
+//        startService()
+//        }
+//        val baseAct: BaseAct = BaseAct.instance
+//        if (baseAct.data == true){
+            startService()
+//        }else if(baseAct.data == false){
+//
+//        }
+
     }
-    // method for starting the service
+
     fun startService() {
         Log.d(TAG, "startService: ")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

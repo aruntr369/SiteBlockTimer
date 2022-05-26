@@ -75,10 +75,44 @@ class GetUrl : AccessibilityService() {
 
     private fun analyzeCapturedUrl(capturedUrl: String, browserPackage: String) {
         val redirectUrl = "google.com"
-        if (capturedUrl.contains("facebook.com")) {
+        if (capturedUrl.contains("facebook.com")){
             Log.d(TAG, "analyzeCapturedUrl: URL contain FB")
+            performBolck()
+        }
+        else if (capturedUrl.contains("twitter.com")) {
+            performBolck()
+        }
+        else if (capturedUrl.contains("instagram.com")) {
+            performBolck()
+        }
+        else if (capturedUrl.contains("freddit.com")) {
+            performBolck()
+        }
+        else if (capturedUrl.contains("9gag.com")) {
             //performRedirect(redirectUrl, browserPackage)
             performBolck()
+        }
+        else{
+            val baseAct: BaseAct = BaseAct.instance
+            if (baseAct.data == false && capturedUrl.contains(".com")){
+                if (!capturedUrl.contains("facebook.com")){
+                    Log.d(TAG, "analyzeCapturedUrl: URL contain FB")
+                    intentfun()
+                }
+                else if (!capturedUrl.contains("twitter.com")) {
+                    intentfun()
+                }
+                else if (!capturedUrl.contains("instagram.com")) {
+                    intentfun()
+                }
+                else if (!capturedUrl.contains("freddit.com")) {
+                    intentfun()
+                }
+                else if (!capturedUrl.contains("9gag.com")) {
+                    //performRedirect(redirectUrl, browserPackage)
+                    intentfun()
+                }
+            }
         }
     }
     private fun performBolck(){
@@ -86,11 +120,16 @@ class GetUrl : AccessibilityService() {
 //        sea.startService()
 //        var screen = ScreenBlock()
 //        screen.startService()
+
+        val baseAct: BaseAct = BaseAct.instance
+        if (baseAct.data == true){
+            intentfun()
+        }
+    }
+    private fun intentfun() {
         val iin = Intent(this, ScreenBlock::class.java)
         iin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(iin)
-
-
     }
 
     /** we just reopen the browser app with our redirect url using service context
