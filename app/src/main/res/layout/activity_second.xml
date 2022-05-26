@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SecondActivity">
+    tools:context=".views.SecondActivity">
 
 
     <TextView
@@ -59,7 +59,7 @@
             app:layout_constraintGuide_percent="0.5" />
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/fromTime2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -69,7 +69,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/toTime2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -86,10 +86,10 @@
             android:background="#6A6A6A"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+            app:layout_constraintTop_toBottomOf="@+id/fromTime2" />
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/editTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -100,7 +100,7 @@
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/deleteTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -125,18 +125,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        app:showText="false"
+        android:thumb="@drawable/thumb"
+        app:track="@drawable/traack"
         android:text=""
         app:layout_constraintEnd_toEndOf="@+id/textView6"
         app:layout_constraintStart_toStartOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/tvWhiteList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Whitelist"
@@ -146,7 +149,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/tvBlackList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Blacklist"
@@ -154,6 +157,36 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/switch1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/switch1" />
+
+    <TextView
+        android:id="@+id/tvBlack"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="2dp"
+        android:textSize="18sp"
+        android:text="@string/blacklist"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/tvBlackList"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tvWhiteList"
+        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+
+    <TextView
+        android:id="@+id/tvWhite"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="2dp"
+        android:textSize="18sp"
+        android:text="@string/whitelist"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/tvBlackList"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tvWhiteList"
+        app:layout_constraintTop_toBottomOf="@+id/switch1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

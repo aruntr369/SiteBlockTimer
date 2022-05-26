@@ -6,11 +6,14 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.provider.Browser
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
+import com.arun.siteblocktimer.views.ScreenBlock
 
 
 class GetUrl : AccessibilityService() {
+    private  val TAG = "GetUrl"
     private val previousUrlDetections: HashMap<String, Long> = HashMap()
     override fun onServiceConnected() {
         val info = serviceInfo
@@ -71,10 +74,23 @@ class GetUrl : AccessibilityService() {
     }
 
     private fun analyzeCapturedUrl(capturedUrl: String, browserPackage: String) {
-        val redirectUrl = "your redirect url is here"
+        val redirectUrl = "google.com"
         if (capturedUrl.contains("facebook.com")) {
-            performRedirect(redirectUrl, browserPackage)
+            Log.d(TAG, "analyzeCapturedUrl: URL contain FB")
+            //performRedirect(redirectUrl, browserPackage)
+            performBolck()
         }
+    }
+    private fun performBolck(){
+//        var sea = SecondActivity()
+//        sea.startService()
+//        var screen = ScreenBlock()
+//        screen.startService()
+        val iin = Intent(this, ScreenBlock::class.java)
+        iin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(iin)
+
+
     }
 
     /** we just reopen the browser app with our redirect url using service context

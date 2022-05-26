@@ -3,4 +3,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="accessibility_service_label">url service</string>
+    <string name="whitelist">In whitelist mode, the websites in the list are allowed but all other websites are blocked</string>
+    <string name="blacklist">In blacklist mode, the websites in the list are blocked but all other websites are allowed</string>
 </resources>
