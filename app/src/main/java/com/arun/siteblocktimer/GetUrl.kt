@@ -13,7 +13,7 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.arun.siteblocktimer.service.ForegroundService
-import com.arun.siteblocktimer.views.ScreenBlock
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -131,7 +131,7 @@ class GetUrl : AccessibilityService() {
             val baseAct: BaseAct = BaseAct.instance
             if (baseAct.data == false && capturedUrl.contains(".com")){
                 if (!capturedUrl.contains("facebook.com")){
-                    Log.d(TAG, "analyzeCapturedUrl: URL contain FB")
+                    Log.d(TAG, "analyzeCapturedUrl: URL contain not fb")
                     intentfun()
                 }
                 else if (!capturedUrl.contains("twitter.com")) {
@@ -166,28 +166,32 @@ class GetUrl : AccessibilityService() {
 
 
         val cal: Calendar = GregorianCalendar()
-//        cal.add(Calendar.DAY_OF_YEAR, cur_cal.get(Calendar.DAY_OF_YEAR))
         cal[Calendar.HOUR_OF_DAY] = baseAct.startTinHH!!
-//        cal[Calendar.MINUTE] = 32
-//        cal[Calendar.SECOND] = cur_cal.get(Calendar.SECOND)
-//        cal[Calendar.MILLISECOND] = cur_cal.get(Calendar.MILLISECOND)
-//        cal[Calendar.DATE] = cur_cal.get(Calendar.DATE)
-//        cal[Calendar.MONTH] = cur_cal.get(Calendar.MONTH)
+
         val intent = Intent(this, ForegroundService::class.java)
         val pintent = PendingIntent.getService(this, 0, intent, 0)
         val alarm = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.timeInMillis, (30 * 1000).toLong(), pintent)
+        alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.timeInMillis, (60 * 1000).toLong(), pintent)
 
 
+        //   BYdefault //setting follwup date and time to current time and date
+        val alsoNow = Calendar.getInstance().time
+        var currentdate = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(alsoNow)
+        var currenttimeHour = SimpleDateFormat("HH", Locale.getDefault()).format(alsoNow)
 
-//        val iin = Intent(this, ScreenBlock::class.java)
-//        iin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//        startActivity(iin)
+       // baseAct.endTimeHH
+        if (baseAct.endTimeHH == Integer.parseInt(currenttimeHour)){
+            stopServ()
+        }
+
+
+    }
+    public fun stopServ(){
+        val intent = Intent(this, ForegroundService::class.java)
+        stopService(intent)
     }
 
-    /** we just reopen the browser app with our redirect url using service context
-     * We may use more complicated solution with invisible activity to send a simple intent to open the url  */
-    private fun performRedirect(redirectUrl: String, browserPackage: String) {
+       private fun performRedirect(redirectUrl: String, browserPackage: String) {
         try {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(redirectUrl))
             intent.setPackage(browserPackage)
@@ -212,10 +216,7 @@ class GetUrl : AccessibilityService() {
             return packageNames.toTypedArray()
         }
 
-        /** @return a list of supported browser configs
-         * This list could be instead obtained from remote server to support future browser updates without updating an app
-         */
-        private val supportedBrowsers: List<SupportedBrowserConfig>
+               private val supportedBrowsers: List<SupportedBrowserConfig>
             private get() {
                 val browsers: MutableList<SupportedBrowserConfig> = ArrayList()
                 browsers.add(

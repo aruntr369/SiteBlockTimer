@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
 import com.arun.siteblocktimer.BaseAct
 import com.arun.siteblocktimer.R
@@ -46,6 +47,7 @@ class SecondActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
 
@@ -84,10 +86,25 @@ class SecondActivity : AppCompatActivity() {
         }
         val outputTextHH: String = outputFormatHH.format(dateFrom)
         val outputTextmm: String = outputFormatmm.format(dateFrom)
+
+        val inputTextTO: String = toTime
+        var dateFromTO: Date? = null
+        try {
+            dateFromTO = inputFormat.parse(inputTextTO)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        val outputTextHHTO: String = outputFormatHH.format(dateFromTO)
+
+
+
+
         Log.d(TAG, "onCreate: timesFromTV $outputTextHH : $outputFormatmm")
 
         baseAct.startTime = "$outputTextHH:$outputTextmm"
         baseAct.startTinHH = Integer.parseInt(outputTextHH)
+        baseAct.endTimeHH = Integer.parseInt(outputTextHHTO)
+        Log.d(TAG, "onCreate: to time "+Integer.parseInt(outputTextHHTO))
 
         deleteTV.setOnClickListener {
             //val ii = Intent(applicationContext,MainActivity::class.java)

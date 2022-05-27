@@ -2,7 +2,6 @@ package com.arun.siteblocktimer.views
 
 import android.app.TimePickerDialog
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -11,9 +10,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.arun.siteblocktimer.service.BlockService
+import androidx.appcompat.app.AppCompatDelegate
 import com.arun.siteblocktimer.R
-import com.arun.siteblocktimer.service.ForegroundService
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,6 +25,7 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -45,22 +44,6 @@ class MainActivity : AppCompatActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
-
-
-//        checkOverlayPermission()
-//        startService()
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
