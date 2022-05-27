@@ -21,7 +21,8 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
     lateinit var showBottomSheet: LinearLayout
-    private lateinit var currenttime: String
+    private lateinit var Hcurrenttime: String
+    private lateinit var Mcurrenttime: String
     lateinit var picker: TimePickerDialog
 
 
@@ -64,8 +65,11 @@ class MainActivity : AppCompatActivity() {
 
 
         val alsoNow = Calendar.getInstance().time
-        currenttime = SimpleDateFormat("HH").format(alsoNow)
-        var timee = Integer.parseInt(currenttime)
+        Hcurrenttime = SimpleDateFormat("HH").format(alsoNow)
+        Mcurrenttime = SimpleDateFormat("mm").format(alsoNow)
+        var timee = Integer.parseInt(Hcurrenttime)
+        var timeeMM = Integer.parseInt(Mcurrenttime)
+        Log.d(TAG, "onCreate:Times are $timeeMM  ,, $timee")
 
 
         showBottomSheet = findViewById(R.id.clickToShow)
@@ -77,17 +81,17 @@ class MainActivity : AppCompatActivity() {
             val toTime = view.findViewById<EditText>(R.id.followuptime2)
             val saveTV = view.findViewById<TextView>(R.id.saveTV)
 
-            fromTime.setText(timee.toString()+":00")
-            toTime.setText((timee+1).toString()+":00")
+            fromTime.setText(timee.toString()+":"+timeeMM.toString())
+            toTime.setText((timee+1).toString()+":"+timeeMM.toString())
             fromTime.setOnClickListener {
                 picker = TimePickerDialog(this,
-                    { timePicker, h, m -> fromTime.setText("$h:$m") }, timee, 0, true
+                    { timePicker, h, m -> fromTime.setText("$h:$m") }, timee, timeeMM, true
                 )
                 picker.show()
             }
             toTime.setOnClickListener {
                 picker = TimePickerDialog(this,
-                    { timePicker, h, m -> toTime.setText("$h:$m") }, timee+1, 0, true
+                    { timePicker, h, m -> toTime.setText("$h:$m") }, timee+1, timeeMM, true
                 )
                 picker.show()
             }
@@ -109,43 +113,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//
-//    // method for starting the service
-//    fun startService() {
-//        Log.d(TAG, "startService: ")
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            // check if the user has already granted
-//            // the Draw over other apps permission
-//            if (Settings.canDrawOverlays(this)) {
-//                // start the service based on the android version
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                    startForegroundService(Intent(this, ForegroundService::class.java))
-//                } else {
-//                    startService(Intent(this, ForegroundService::class.java))
-//                }
-//            }
-//        } else {
-//            startService(Intent(this, ForegroundService::class.java))
-//        }
-//    }
-//
-//    // method to ask user to grant the Overlay permission
-//    fun checkOverlayPermission() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (!Settings.canDrawOverlays(this)) {
-//                // send user to the device settings
-//                val myIntent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
-//                startActivity(myIntent)
-//            }
-//        }
-//    }
-//
-//    // check for permission again when user grants it from
-//    // the device settings, and start the service
-//    override fun onResume() {
-//        super.onResume()
-//        startService()
-//    }
 }
 
 

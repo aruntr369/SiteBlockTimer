@@ -1,9 +1,11 @@
 package com.arun.siteblocktimer.views
 
-import android.app.Activity
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
@@ -12,16 +14,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
+import com.arun.siteblocktimer.BaseAct
 import com.arun.siteblocktimer.R
-import com.arun.siteblocktimer.service.BlockService
-import com.arun.siteblocktimer.service.ForegroundService
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import java.text.DateFormat
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import android.os.Build
-import android.content.Intent
-import android.provider.Settings
-import com.arun.siteblocktimer.BaseAct
 
 
 class SecondActivity : AppCompatActivity() {
@@ -33,7 +32,8 @@ class SecondActivity : AppCompatActivity() {
     private lateinit var editTV: TextView
     var fromTime: String =""
     var toTime: String =""
-    private lateinit var currenttime: String
+    private lateinit var Hcurrenttime: String
+    private lateinit var Mcurrenttime: String
     lateinit var picker: TimePickerDialog
     lateinit var switch: SwitchCompat
     lateinit var tvBlack: TextView
@@ -69,6 +69,25 @@ class SecondActivity : AppCompatActivity() {
 
         fromtv.text = fromTime
         totv.text = toTime
+
+
+        val outputFormatHH: DateFormat = SimpleDateFormat("HH")
+        val outputFormatmm: DateFormat = SimpleDateFormat("mm")
+
+        val inputFormat: DateFormat = SimpleDateFormat("HH:mm", Locale.US)
+        val inputText: String = fromTime
+        var dateFrom: Date? = null
+        try {
+            dateFrom = inputFormat.parse(inputText)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        val outputTextHH: String = outputFormatHH.format(dateFrom)
+        val outputTextmm: String = outputFormatmm.format(dateFrom)
+        Log.d(TAG, "onCreate: timesFromTV $outputTextHH : $outputFormatmm")
+
+        baseAct.startTime = "$outputTextHH:$outputTextmm"
+        baseAct.startTinHH = Integer.parseInt(outputTextHH)
 
         deleteTV.setOnClickListener {
             //val ii = Intent(applicationContext,MainActivity::class.java)
@@ -112,8 +131,11 @@ class SecondActivity : AppCompatActivity() {
     private fun toBottomSheet() {
 
         val alsoNow = Calendar.getInstance().time
-        currenttime = SimpleDateFormat("HH").format(alsoNow)
-        var timee = Integer.parseInt(currenttime)
+        Hcurrenttime = SimpleDateFormat("HH").format(alsoNow)
+        Mcurrenttime = SimpleDateFormat("mm").format(alsoNow)
+        var timee = Integer.parseInt(Hcurrenttime)
+        var timeeMM = Integer.parseInt(Mcurrenttime)
+        Log.d(TAG, "onCreate:Times are $timeeMM  ,, $timee")
 
         val dialog = BottomSheetDialog(this)
         val view = layoutInflater.inflate(R.layout.fragment_bottom_sheet, null)
@@ -124,8 +146,8 @@ class SecondActivity : AppCompatActivity() {
 
         bottomHead.text ="Edit Timing"
 
-        fromTime.setText(timee.toString()+":00")
-        toTime.setText((timee+1).toString()+":00")
+        fromTime.setText(timee.toString()+":"+timeeMM.toString())
+        toTime.setText((timee+1).toString()+":"+timeeMM.toString())
         fromTime.setOnClickListener {
             picker = TimePickerDialog(this,
                 { timePicker, h, m -> fromTime.setText("$h:$m") }, timee, 0, true

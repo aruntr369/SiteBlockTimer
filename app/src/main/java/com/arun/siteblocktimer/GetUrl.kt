@@ -2,14 +2,19 @@ package com.arun.siteblocktimer
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Browser
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
+import com.arun.siteblocktimer.service.ForegroundService
 import com.arun.siteblocktimer.views.ScreenBlock
+import java.util.*
 
 
 class GetUrl : AccessibilityService() {
@@ -73,6 +78,36 @@ class GetUrl : AccessibilityService() {
         }
     }
 
+    private fun timeToStart(capturedUrl: String, browserPackage: String){
+//        var alsoNow = Calendar.getInstance().time
+//        var currenttime: String = SimpleDateFormat("HH:mm").format(alsoNow)
+////        var timee = Integer.parseInt(currenttime)
+//        if (baseAct.startTime == currenttime){
+//            Log.d(TAG, "timeToStart: Time equals")
+//            analyzeCapturedUrl(capturedUrl,browserPackage)
+//        }
+
+        val baseAct: BaseAct = BaseAct.instance
+        val cur_cal: Calendar = GregorianCalendar()
+        cur_cal.timeInMillis =System.currentTimeMillis()
+
+
+        val cal: Calendar = GregorianCalendar()
+//        cal.add(Calendar.DAY_OF_YEAR, cur_cal.get(Calendar.DAY_OF_YEAR))
+        cal[Calendar.HOUR_OF_DAY] = baseAct.startTinHH!!
+//        cal[Calendar.MINUTE] = 32
+//        cal[Calendar.SECOND] = cur_cal.get(Calendar.SECOND)
+//        cal[Calendar.MILLISECOND] = cur_cal.get(Calendar.MILLISECOND)
+//        cal[Calendar.DATE] = cur_cal.get(Calendar.DATE)
+//        cal[Calendar.MONTH] = cur_cal.get(Calendar.MONTH)
+        val intent = Intent(this, ForegroundService::class.java)
+        val pintent = PendingIntent.getService(this, 0, intent, 0)
+        val alarm = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.timeInMillis, (2 * 30 * 1000).toLong(), pintent)
+
+
+    }
+    
     private fun analyzeCapturedUrl(capturedUrl: String, browserPackage: String) {
         val redirectUrl = "google.com"
         if (capturedUrl.contains("facebook.com")){
@@ -116,10 +151,7 @@ class GetUrl : AccessibilityService() {
         }
     }
     private fun performBolck(){
-//        var sea = SecondActivity()
-//        sea.startService()
-//        var screen = ScreenBlock()
-//        screen.startService()
+
 
         val baseAct: BaseAct = BaseAct.instance
         if (baseAct.data == true){
@@ -127,9 +159,30 @@ class GetUrl : AccessibilityService() {
         }
     }
     private fun intentfun() {
-        val iin = Intent(this, ScreenBlock::class.java)
-        iin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(iin)
+
+        val baseAct: BaseAct = BaseAct.instance
+        val cur_cal: Calendar = GregorianCalendar()
+        cur_cal.timeInMillis =System.currentTimeMillis()
+
+
+        val cal: Calendar = GregorianCalendar()
+//        cal.add(Calendar.DAY_OF_YEAR, cur_cal.get(Calendar.DAY_OF_YEAR))
+        cal[Calendar.HOUR_OF_DAY] = baseAct.startTinHH!!
+//        cal[Calendar.MINUTE] = 32
+//        cal[Calendar.SECOND] = cur_cal.get(Calendar.SECOND)
+//        cal[Calendar.MILLISECOND] = cur_cal.get(Calendar.MILLISECOND)
+//        cal[Calendar.DATE] = cur_cal.get(Calendar.DATE)
+//        cal[Calendar.MONTH] = cur_cal.get(Calendar.MONTH)
+        val intent = Intent(this, ForegroundService::class.java)
+        val pintent = PendingIntent.getService(this, 0, intent, 0)
+        val alarm = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.timeInMillis, (30 * 1000).toLong(), pintent)
+
+
+
+//        val iin = Intent(this, ScreenBlock::class.java)
+//        iin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//        startActivity(iin)
     }
 
     /** we just reopen the browser app with our redirect url using service context
