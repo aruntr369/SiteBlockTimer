@@ -1,14 +1,12 @@
 package com.arun.siteblocktimer.views
 
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.arun.siteblocktimer.R
@@ -31,19 +29,19 @@ class MainActivity : AppCompatActivity() {
 
 
 //        startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-
-
-        var accessEnabled = 0
-        try {
-            accessEnabled = Settings.Secure.getInt(this.contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        if (accessEnabled == 0) {
-            var intent =Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-        }
+//
+//
+//        var accessEnabled = 0
+//        try {
+//            accessEnabled = Settings.Secure.getInt(this.contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED)
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//        if (accessEnabled == 0) {
+//            var intent =Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+//            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//            startActivity(intent)
+//        }
 
 
 
@@ -94,6 +92,31 @@ class MainActivity : AppCompatActivity() {
             dialog.setContentView(view)
             dialog.show()
         }
+    }
+    override fun onResume() {
+        super.onResume()
+
+        if (!isAccessServiceEnabled(this))
+            setAccessibilityPermission()
+        //else
+            //checkScheduled()
+    }
+    private fun setAccessibilityPermission() {
+        Toast.makeText(this, "Find Block Sites app in the list and enable permission for using the app", Toast.LENGTH_LONG).show()
+        val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+    }
+    fun isAccessServiceEnabled(context: Context): Boolean {
+        val prefString =
+            Settings.Secure.getString(context.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
+        if (prefString==null) {
+            return (Settings.Secure.getInt(this.contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED) != 0)
+        }
+        else {
+            return prefString.contains("${context.packageName}/${context.packageName}.GetUrl")
+        }
+
     }
 
 }

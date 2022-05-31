@@ -51,7 +51,7 @@ class SecondActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
 
-        checkOverlayPermission()
+        //checkOverlayPermission()
 
         fromtv = findViewById(R.id.fromTime2)
         totv = findViewById(R.id.toTime2)
@@ -95,13 +95,18 @@ class SecondActivity : AppCompatActivity() {
             e.printStackTrace()
         }
         val outputTextHHTO: String = outputFormatHH.format(dateFromTO)
+        val outputTextmmTO: String = outputFormatmm.format(dateFromTO)
 
 
 
 
-        Log.d(TAG, "onCreate: timesFromTV $outputTextHH : $outputFormatmm")
+        Log.d(TAG, "onCreate: timesFromTV $outputTextHH : $outputTextmm")
+        Log.d(TAG, "onCreate: timesFromTV $outputTextHHTO : $outputTextmmTO")
 
         baseAct.startTime = "$outputTextHH:$outputTextmm"
+        baseAct.endTime = "$outputTextHHTO:$outputTextmmTO"
+
+
         baseAct.startTinHH = Integer.parseInt(outputTextHH)
         baseAct.endTimeHH = Integer.parseInt(outputTextHHTO)
         Log.d(TAG, "onCreate: to time "+Integer.parseInt(outputTextHHTO))
