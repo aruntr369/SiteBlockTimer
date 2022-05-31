@@ -1,17 +1,15 @@
-package com.arun.siteblocktimer
+package com.arun.siteblocktimer.service
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import android.util.Patterns
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
+import com.arun.siteblocktimer.utils.BaseAct
 import java.time.LocalTime
 import java.util.*
 
@@ -26,9 +24,7 @@ class GetUrl : AccessibilityService() {
         info.eventTypes = AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
         info.packageNames = packageNames()
         info.feedbackType = AccessibilityServiceInfo.FEEDBACK_VISUAL
-        //throttling of accessibility event notification
         info.notificationTimeout = 300
-        //support ids interception
         info.flags = AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS or
                 AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
         this.serviceInfo = info

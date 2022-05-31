@@ -1,4 +1,4 @@
-package com.arun.siteblocktimer
+package com.arun.siteblocktimer.utils
 
 
 class BaseAct private constructor() {

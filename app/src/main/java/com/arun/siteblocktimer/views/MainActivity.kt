@@ -28,23 +28,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-//        startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-//
-//
-//        var accessEnabled = 0
-//        try {
-//            accessEnabled = Settings.Secure.getInt(this.contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED)
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-//        if (accessEnabled == 0) {
-//            var intent =Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-//            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//            startActivity(intent)
-//        }
 
+        showBottomSheet = findViewById(R.id.clickToShow)
+        showBottomSheet.setOnClickListener {
 
+            bottomSheet()
 
+        }
+    }
+    private fun bottomSheet(){
         val alsoNow = Calendar.getInstance().time
         Hcurrenttime = SimpleDateFormat("HH").format(alsoNow)
         Mcurrenttime = SimpleDateFormat("mm").format(alsoNow)
@@ -53,53 +45,47 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "onCreate:Times are $timeeMM  ,, $timee")
 
 
-        showBottomSheet = findViewById(R.id.clickToShow)
-        showBottomSheet.setOnClickListener {
+        val dialog = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.fragment_bottom_sheet, null)
+        val fromTime = view.findViewById<EditText>(R.id.followuptime)
+        val toTime = view.findViewById<EditText>(R.id.followuptime2)
+        val saveTV = view.findViewById<TextView>(R.id.saveTV)
 
-            val dialog = BottomSheetDialog(this)
-            val view = layoutInflater.inflate(R.layout.fragment_bottom_sheet, null)
-            val fromTime = view.findViewById<EditText>(R.id.followuptime)
-            val toTime = view.findViewById<EditText>(R.id.followuptime2)
-            val saveTV = view.findViewById<TextView>(R.id.saveTV)
-
-            fromTime.setText(timee.toString()+":"+timeeMM.toString())
-            toTime.setText((timee+1).toString()+":"+timeeMM.toString())
-            fromTime.setOnClickListener {
-                picker = TimePickerDialog(this,
-                    { timePicker, h, m -> fromTime.setText("$h:$m") }, timee, timeeMM, true
-                )
-                picker.show()
-            }
-            toTime.setOnClickListener {
-                picker = TimePickerDialog(this,
-                    { timePicker, h, m -> toTime.setText("$h:$m") }, timee+1, timeeMM, true
-                )
-                picker.show()
-            }
-            saveTV.setOnClickListener {
-                val i = Intent(applicationContext, SecondActivity::class.java)
-                i.putExtra("fromTime",fromTime.text.toString())
-                i.putExtra("toTime",toTime.text.toString())
-                startActivity(i)
-                dialog.dismiss()
-                finish()
-            }
-            val btnClose = view.findViewById<ImageView>(R.id.closeIV)
-            btnClose.setOnClickListener {
-                dialog.dismiss()
-            }
-            dialog.setCancelable(true)
-            dialog.setContentView(view)
-            dialog.show()
+        fromTime.setText(timee.toString()+":"+timeeMM.toString())
+        toTime.setText((timee+1).toString()+":"+timeeMM.toString())
+        fromTime.setOnClickListener {
+            picker = TimePickerDialog(this,
+                { timePicker, h, m -> fromTime.setText("$h:$m") }, timee, timeeMM, true
+            )
+            picker.show()
         }
+        toTime.setOnClickListener {
+            picker = TimePickerDialog(this,
+                { timePicker, h, m -> toTime.setText("$h:$m") }, timee+1, timeeMM, true
+            )
+            picker.show()
+        }
+        saveTV.setOnClickListener {
+            val i = Intent(applicationContext, SecondActivity::class.java)
+            i.putExtra("fromTime",fromTime.text.toString())
+            i.putExtra("toTime",toTime.text.toString())
+            startActivity(i)
+            dialog.dismiss()
+            finish()
+        }
+        val btnClose = view.findViewById<ImageView>(R.id.closeIV)
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setCancelable(true)
+        dialog.setContentView(view)
+        dialog.show()
     }
+
     override fun onResume() {
         super.onResume()
-
         if (!isAccessServiceEnabled(this))
             setAccessibilityPermission()
-        //else
-            //checkScheduled()
     }
     private fun setAccessibilityPermission() {
         Toast.makeText(this, "Find Block Sites app in the list and enable permission for using the app", Toast.LENGTH_LONG).show()
@@ -114,11 +100,9 @@ class MainActivity : AppCompatActivity() {
             return (Settings.Secure.getInt(this.contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED) != 0)
         }
         else {
-            return prefString.contains("${context.packageName}/${context.packageName}.GetUrl")
+            return prefString.contains("${context.packageName}/${context.packageName}.service.GetUrl")
         }
-
     }
-
 }
 
 
