@@ -27,13 +27,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
         showBottomSheet = findViewById(R.id.clickToShow)
         showBottomSheet.setOnClickListener {
-
             bottomSheet()
-
         }
     }
     private fun bottomSheet(){
@@ -43,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         var timee = Integer.parseInt(Hcurrenttime)
         var timeeMM = Integer.parseInt(Mcurrenttime)
         Log.d(TAG, "onCreate:Times are $timeeMM  ,, $timee")
-
 
         val dialog = BottomSheetDialog(this)
         val view = layoutInflater.inflate(R.layout.fragment_bottom_sheet, null)
@@ -88,7 +83,7 @@ class MainActivity : AppCompatActivity() {
             setAccessibilityPermission()
     }
     private fun setAccessibilityPermission() {
-        Toast.makeText(this, "Find Block Sites app in the list and enable permission for using the app", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Find Url Service app in the list and enable permission for using the app", Toast.LENGTH_LONG).show()
         val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)

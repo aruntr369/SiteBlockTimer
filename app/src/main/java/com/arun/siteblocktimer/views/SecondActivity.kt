@@ -27,8 +27,8 @@ class SecondActivity : AppCompatActivity() {
     lateinit var totv: TextView
     private lateinit var deleteTV: TextView
     private lateinit var editTV: TextView
-    var fromTime: String = ""
-    var toTime: String = ""
+    var fromTime: String = "10:00"
+    var toTime: String = "10:00"
     private lateinit var Hcurrenttime: String
     private lateinit var Mcurrenttime: String
     lateinit var picker: TimePickerDialog
@@ -69,6 +69,9 @@ class SecondActivity : AppCompatActivity() {
 
         deleteTV.setOnClickListener {
             startActivity(Intent(applicationContext, MainActivity::class.java))
+            baseAct.startTime = "00:00"
+            baseAct.endTime = "00:00"
+            finish()
         }
         editTV.setOnClickListener {
             toBottomSheet()

@@ -10,6 +10,7 @@ import android.util.Patterns
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.arun.siteblocktimer.utils.BaseAct
+import java.text.SimpleDateFormat
 import java.time.LocalTime
 import java.util.*
 
@@ -105,11 +106,16 @@ class GetUrl : AccessibilityService() {
 
     private fun isScheduledTimeNow() : Boolean {
 
-        val currentTime = LocalTime.now()
-        val scheduleStart = LocalTime.parse(baseAct.startTime)
-        val scheduleEnd = LocalTime.parse(baseAct.endTime)
+        val date = Date()
+        val dateFormat = SimpleDateFormat("HH:mm")
 
-        return (currentTime.isAfter(scheduleStart) && currentTime.isBefore(scheduleEnd))
+        var startTime = dateFormat.parse(baseAct.startTime)
+        var startEnd = dateFormat.parse(baseAct.endTime)
+        var currentTime = dateFormat.parse(dateFormat.format(date))
+
+        return (currentTime.after(startTime) && currentTime.before(startEnd) ||
+                currentTime.equals(startTime) || currentTime.equals(startEnd))
+
     }
 
     private fun launchAccessDenied(currentURL: String) {
